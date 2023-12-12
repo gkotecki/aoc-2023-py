@@ -18,18 +18,18 @@ with open(file_path, "r") as file:
 
 lines = contents.split("\n")
 
-lines = [
-    "467..114..",
-    "...*......",  # gear close to 467 and 35, ratio is 467*35 = 16345
-    "..35..633.",
-    "......#...",
-    "617*......",  # gear not close to exactly 2, not considered
-    ".....+.58.",
-    "..592.....",
-    "......755.",
-    "...$.*....",  # gear close to 755 and 598, ratio is 755*598 = 451490
-    ".664.598..",
-]  # all gears add up to 467835
+# lines = [
+#     "467..114..",
+#     "...*......",  # gear close to 467 and 35, ratio is 467*35 = 16345
+#     "..35..633.",
+#     "......#...",
+#     "617*......",  # gear not close to exactly 2, not considered
+#     ".....+.58.",
+#     "..592.....",
+#     "......755.",
+#     "...$.*....",  # gear close to 755 and 598, ratio is 755*598 = 451490
+#     ".664.598..",
+# ]  # all gears add up to 467835
 
 pp(lines)
 
@@ -48,22 +48,20 @@ def parseNumber(x, y):
         else:
             break
 
-    xStart = max(x - 1, 0)
-    xEnd = min(x + len(num), len(line) - 1)
+    xStart, xEnd = max(x - 1, 0), min(x + len(num), len(line) - 1)
+    yStart, yEnd = max(y - 1, 0), min(y + 1, len(lines) - 1)
 
-    upperBorder = lines[y - 1][xStart : xEnd + 1] if y > 0 else ""
-    sideChars = line[xStart] + line[xEnd]
-    lowerBorder = lines[y + 1][xStart : xEnd + 1] if y < len(lines) - 1 else ""
+    adjacentGears = []
+    y = yStart
+    while y <= yEnd:
+        x = xStart
+        while x <= xEnd:
+            if lines[y][x] == "*":
+                adjacentGears.append((x, y))
+            x += 1
+        y += 1
 
-    borders = upperBorder + sideChars + lowerBorder
-
-    adjacent = False
-    for c in borders:
-        if c not in (nums + "."):
-            adjacent = True
-            break
-
-    return {"number": int(num), "adjacent": adjacent, "length": len(num)}
+    return {"number": int(num), "adjacentGears": adjacentGears, "length": len(num)}
 
 
 foundNumbers = []
@@ -80,9 +78,19 @@ for y in range(len(lines)):
 
 pp(foundNumbers)
 
-filteredSum = 0
-for num in foundNumbers:
-    if num["adjacent"]:
-        filteredSum += num["number"]
+gears = {}
 
-pp(filteredSum)
+for number in foundNumbers:
+    for coord in number["adjacentGears"]:
+        if coord in gears:
+            gears[coord].append(number["number"])
+        else:
+            gears[coord] = [number["number"]]
+
+pp(gears)
+
+ratio = 0
+for coord in gears:
+    if len(gears[coord]) == 2:
+        ratio += gears[coord][0] * gears[coord][1]
+pp(ratio)
