@@ -1,5 +1,6 @@
 import os
 import pprint
+import time
 
 os.system("clear")
 os.system("cls")
@@ -36,21 +37,6 @@ with open(file_path, "r") as file:
 # https://github.com/mgtezak/Advent_of_Code/blob/master/2023/Day_05.py
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 lines = contents.split("\n")
 pp(lines)
 
@@ -83,10 +69,11 @@ seedInputs = list(map(int, lines[0].split()[1:]))
 seedRanges = [(seedInputs[i], seedInputs[i] + seedInputs[i + 1]) for i in range(0, len(seedInputs), 2)]
 
 smallestLocation = 0
+start_time = time.time()
 
 while True:
     if smallestLocation % 50_000 == 0:
-        pp(f'location: {smallestLocation/60_294_664 *100:.2f}%')
+        pp(f'time: {time.time() - start_time}s   location: {smallestLocation/60_294_664 *100:.2f}%')
 
     humidity = find_in(humidity_to_location, smallestLocation)
     temperature = find_in(temperature_to_humidity, humidity)
