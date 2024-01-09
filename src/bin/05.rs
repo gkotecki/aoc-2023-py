@@ -23,10 +23,10 @@ fn main() {
 
     let seed_ranges: Vec<(i64, i64)> = (0..seeds.len())
         .step_by(2)
-        .map(|i| (
-            seeds[i].parse().unwrap(),
-            seeds[i].parse::<i64>().unwrap() + seeds[i + 1].parse::<i64>().unwrap(),
-        ))
+        .map(|i| {
+            let start = seeds[i].parse().unwrap();
+            (start, start + seeds[i + 1].parse::<i64>().unwrap())
+        })
         .collect();
 
     let mut smallest_location = 0;
