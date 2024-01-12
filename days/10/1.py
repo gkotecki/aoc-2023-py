@@ -1,6 +1,9 @@
 import os
 import pprint
 
+import sys
+sys.setrecursionlimit(100000)
+
 os.system("clear")
 
 
@@ -30,7 +33,6 @@ for l in range(len(grid)):
 pp((line, col))
 
 counter = 0
-
 
 def get_next_tile(from_dir, l, c):
     pp(f"current pos: {(l, c)}: {grid[l][c]}")
