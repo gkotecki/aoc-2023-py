@@ -12,19 +12,15 @@ def pp(lines):
 
 lines = open("days/11/input.txt").read().splitlines()
 lines = open("days/11/example.txt").read().splitlines()
-# 1030 with 10
-# 8410 with 100
 
 # pp(lines)
 
-empty_space = 99
 expanded_universe = []
 
 for line in lines:
     expanded_universe.append(line)
     if "#" not in line:
-        for i in range(empty_space):
-            expanded_universe.append(line)
+        expanded_universe.append(line)
 
 empty_space_col_idxs = []
 for col in range(len(lines[0])):
@@ -32,8 +28,7 @@ for col in range(len(lines[0])):
     for row in range(len(lines)):
         col_str += lines[row][col]
     if "#" not in col_str:
-        for i in range(empty_space):
-            empty_space_col_idxs.append(col)
+        empty_space_col_idxs.append(col)
 
 while empty_space_col_idxs:
     idx = empty_space_col_idxs.pop()
